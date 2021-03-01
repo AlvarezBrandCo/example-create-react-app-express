@@ -54,7 +54,7 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Learn this
           </a>
         </header>
         <p>{this.state.response}</p>
