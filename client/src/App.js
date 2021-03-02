@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 
 import './App.css';
-
+console.log(process.env)
 class App extends Component {
   state = {
     response: '',
@@ -14,6 +14,9 @@ class App extends Component {
   componentDidMount() {
     this.callApi()
       .then(res => this.setState({ response: res.express }))
+      .catch(err => console.log(err));
+    this.callEnv()
+      .then(res => this.setState({env: res.body}))
       .catch(err => console.log(err));
   }
 
@@ -26,9 +29,18 @@ class App extends Component {
     return body;
   };
 
+  callEnv = async () => {
+    const response = await fetch('/api/env');
+    const body = await response.json();
+
+    if (response.status !== 200) throw Error(body.message);
+
+    return body;
+  };
+
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch('/api/world', {
+    const response = await fetch('/api/env', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,6 +60,7 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
+
           <a
             className="App-link"
             href="https://reactjs.org"
