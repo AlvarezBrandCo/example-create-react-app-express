@@ -2,6 +2,11 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 
+const dotenv = require('dotenv');
+dotenv.config();
+const fetch = require('node-fetch');
+
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -11,6 +16,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // API calls
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
+});
+
+const newPromise = new Promise((resolve, reject) => {
+  fetch('https://github.com/')
+    .then(res => res.text())
+    .then(body => console.log(body));
+});
+
+newPromise.then(()=>{
+  console.log("anything")
+})
+
+app.post('/api/env', (req, res) => {
+  res.send(req.body.post)
 });
 
 app.post('/api/world', (req, res) => {
